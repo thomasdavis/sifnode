@@ -2,17 +2,14 @@ package cli
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
-	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/utx0/sifnode/x/clp/types"
+	"github.com/Sifchain/sifnode/x/clp/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

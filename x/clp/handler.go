@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/utx0/sifnode/x/clp/types"
+	"github.com/Sifchain/sifnode/x/clp/types"
 )
 
 // NewHandler creates an sdk.Handler for all the clp type messages

@@ -1,9 +1,8 @@
 package clp
 
 import (
+	"github.com/Sifchain/sifnode/x/clp/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/utx0/sifnode/x/clp/types"
 )
 
 // InitGenesis initialize default parameters

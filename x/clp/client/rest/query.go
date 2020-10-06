@@ -6,9 +6,9 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"github.com/Sifchain/sifnode/x/clp/types"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/types/rest"
-	"github.com/utx0/sifnode/x/clp/types"
 )
 
 func registerQueryRoutes(cliCtx context.CLIContext, r *mux.Router) {

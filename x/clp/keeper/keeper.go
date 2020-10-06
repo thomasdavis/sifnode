@@ -8,7 +8,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/utx0/sifnode/x/clp/types"
+	"github.com/Sifchain/sifnode/x/clp/types"
 )
 
 // Keeper of the clp store

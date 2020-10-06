@@ -12,9 +12,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/utx0/sifnode/x/clp/client/cli"
-	"github.com/utx0/sifnode/x/clp/client/rest"
-	"github.com/utx0/sifnode/x/clp/keeper"
+	"github.com/Sifchain/sifnode/x/clp/client/cli"
+	"github.com/Sifchain/sifnode/x/clp/client/rest"
+	"github.com/Sifchain/sifnode/x/clp/keeper"
 )
 
 // Type check to ensure the interface is properly implemented
