@@ -26,15 +26,6 @@ export function usePool() {
     await usecases?.updateAvailableTokens();
   });
 
-  watch([tokenA, tokenB, tokenAAmount, tokenBAmount], () => {
-    usecases?.renderLiquidityData(
-      tokenA.value,
-      tokenAAmount.value,
-      tokenB.value,
-      tokenBAmount.value
-    );
-  });
-
   const tokenAOptions = computed(() => [
     toOption()(null),
     ...(state?.tokenBalances.map(toOption(tokenB.value)) ?? []),
