@@ -1,18 +1,5 @@
 <template>
-  <div class="home">
-    <Wallet />
+  <div>
+    <h1>Home</h1>
   </div>
 </template>
-
-<script lang="ts">
-import Wallet from "@/components/Wallet.vue";
-
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "Home",
-  components: {
-    Wallet,
-  },
-});
-</script>

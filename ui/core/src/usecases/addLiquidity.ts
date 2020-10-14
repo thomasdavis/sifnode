@@ -1,23 +1,11 @@
-import { Context } from ".";
-import { TokenAmount } from "../entities";
+import { Context, UseCases } from ".";
+import { Asset, TokenAmount } from "../entities";
 
-// No async means this cannot use the store or remote apis.
-function renderLiquidityData(
-  amountA: TokenAmount,
-  amountB?: TokenAmount
-): {
-  tokenAPerBRatio: number; // XXX: Fraction?
-  tokenBPerARatio: number;
-  tokenAAmountOwned: TokenAmount;
-  tokenBAmountOwned: TokenAmount;
-  shareOfPool: number;
-  isInsufficientFunds: boolean;
-} {
-  // ...
-  return {} as any;
+export function useAddLiquidity(usecases: UseCases) {
+  usecases.
 }
 
-export default ({ api, store }: Context) => ({
+export default ({ api, store }: Context<"tokenService">) => ({
   // Listener effects
   intializeAddLiquidityUseCase(/*  */) {
     // XXX: Need websocket listener https://docs.cosmos.network/master/core/events.html#subscribing-to-events
@@ -32,7 +20,28 @@ export default ({ api, store }: Context) => ({
   },
 
   // Render helpers that are business logic
-  renderLiquidityData,
+  async renderLiquidityData(
+    tokenASymbol: string,
+    tokenAAmount: string,
+    tokenBSymbol?: string,
+    tokenBAmount?: string
+  ) {
+    /* 
+: {
+    tokenAPerBRatio: number; // XXX: Fraction?
+    tokenBPerARatio: number;
+    tokenAAmountOwned: TokenAmount;
+    tokenBAmountOwned: TokenAmount;
+    shareOfPool: number;
+    isInsufficientFunds: boolean;
+  }
+*/
+    const tokenA = await api.tokenService.getTokenBySymbol(tokenASymbol);
+
+    const tokenB = tokenBSymbol
+      ? await api.tokenService.getTokenBySymbol(tokenBSymbol)
+      : null;
+  },
 
   // Command and effect usecases
   async addLiquidity(amountA: TokenAmount, amountB: TokenAmount) {

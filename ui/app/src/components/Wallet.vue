@@ -23,9 +23,7 @@ export default {
     const usecases = inject<UseCases>("usecases");
 
     onMounted(async () => {
-      if (usecases) {
-        await usecases.updateAvailableTokens();
-      }
+      await usecases?.updateAvailableTokens();
     });
 
     return { state };
