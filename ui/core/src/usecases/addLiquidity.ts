@@ -1,8 +1,9 @@
+import { State } from "src/store";
 import { Context, UseCases } from ".";
 import { Asset, TokenAmount } from "../entities";
 
-export function useAddLiquidity(usecases: UseCases) {
-  usecases.
+export function useAddLiquidity(usecases: UseCases, state: State) {
+  usecases.addLiquidity();
 }
 
 export default ({ api, store }: Context<"tokenService">) => ({
