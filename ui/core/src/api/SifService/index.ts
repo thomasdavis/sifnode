@@ -3,17 +3,20 @@ import {
   SigningCosmosClient,
   makeCosmoshubPath,
   CosmosClient,
-  Account
-} from "@cosmjs/launchpad"
+  Account,
+} from "@cosmjs/launchpad";
 
-import { ADDR_PREFIX, API } from "../../constants"
-import { Mnemonic, SifAddress } from "../../entities/Wallet" 
+import { ADDR_PREFIX, API } from "../../constants";
+import { Mnemonic, SifAddress } from "../../entities/Wallet";
 
 // Warning This creates a client object used to *sign* TX
-export async function cosmosSignin( mnemonic: Mnemonic ): 
-  Promise<SigningCosmosClient> {
+export async function cosmosSignin(
+  mnemonic: Mnemonic
+): Promise<SigningCosmosClient> {
   try {
-    if (!mnemonic) { throw "No mnemonic. Can't generate wallet."}
+    if (!mnemonic) {
+      throw "No mnemonic. Can't generate wallet.";
+    }
     const wallet = await Secp256k1HdWallet.fromMnemonic(
       mnemonic,
       makeCosmoshubPath(0),
@@ -22,24 +25,22 @@ export async function cosmosSignin( mnemonic: Mnemonic ):
     const [{ address }] = await wallet.getAccounts();
     return new SigningCosmosClient(API, address, wallet);
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
-export async function getCosmosBalance( address: SifAddress ): 
-  Promise<Account>  { 
-    if (!address) throw "Address undefined. Fail"
-    if (address.length !== 42) throw "Address not valid (length). Fail" // this is simple check, limited to default address type (check bech32)
-    const client = new CosmosClient(API)
-    try {
-      const account = await client.getAccount(address)
-      if (!account) throw "No Address found on chain"
-      return account
-    } catch (error) {
-      throw error
-    }
+export async function getBalance(address: SifAddress): Promise<Account> {
+  if (!address) throw "Address undefined. Fail";
+  if (address.length !== 42) throw "Address not valid (length). Fail"; // this is simple check, limited to default address type (check bech32)
+  const client = new CosmosClient(API);
+  try {
+    const account = await client.getAccount(address);
+    if (!account) throw "No Address found on chain";
+    return account;
+  } catch (error) {
+    throw error;
   }
-
+}
 
 // SEND() -- for TX
 // async function validateAddressOnChain() {
@@ -61,5 +62,5 @@ export async function getCosmosBalance( address: SifAddress ):
 //     }
 //     this.inFlight = false;
 //     await this.$store.dispatch("cosmos/bankBalancesGet");
-  
+
 // }

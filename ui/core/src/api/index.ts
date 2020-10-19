@@ -37,7 +37,7 @@ export type IWalletService = {
   getBalance(address?: Address, asset?: Asset | Token): Promise<Balances>;
   // FOLLOWING ARE YTI:
 
-  // setPhrase(phrase: string): Address
+  // setPhrase(phrase: string): Address;
   // setNetwork(net: Network): void
   // getNetwork(): Network
 
