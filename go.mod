@@ -5,10 +5,15 @@ go 1.15
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/MakeNowJust/heredoc/v2 v2.0.1
+	github.com/bitfield/script v0.18.0
 	github.com/cosmos/cosmos-sdk v0.39.1
-	github.com/cucumber/godog v0.10.0
+	github.com/davecgh/go-spew v1.1.1
 	github.com/golang/mock v1.4.3 // indirect
 	github.com/gorilla/mux v1.8.0
+	github.com/kr/text v0.2.0 // indirect
+	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
+	github.com/onsi/ginkgo v1.10.2
+	github.com/onsi/gomega v1.7.0
 	github.com/sethvargo/go-password v0.2.0
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/pflag v1.0.5
