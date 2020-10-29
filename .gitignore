@@ -7,3 +7,5 @@ frontend/.cache
 .DS_Store
 .testCoverage.txt
 .environments
+node_modules
+testnet-contracts/build
