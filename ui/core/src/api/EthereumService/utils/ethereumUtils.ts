@@ -112,7 +112,7 @@ export async function swapToken(
     }
 
     contract.methods
-      // https://github.com/Sifchain/sifnode/blob/feature/clp/testnet-contracts/test/test_bridgeBank.js#L375
+      // https://github.com/Sifchain/sifnode/blob/develop/testnet-contracts/test/test_bridgeBank.js#L377
       // this.bridgeBank.lock(
       //   this.recipient,
       //   this.token2.address,
