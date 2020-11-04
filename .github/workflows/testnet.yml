@@ -20,9 +20,11 @@ jobs:
           make CHAINNET=testnet BINARY=sifnoded build-image
           make CHAINNET=testnet BINARY=sifnodecli build-image
           make CHAINNET=testnet BINARY=sifcrg build-image
+          make CHAINNET=testnet BINARY=ebrelayer build-image
 
       - name: Push images
         run: |
           docker push sifchain/sifnoded:testnet
           docker push sifchain/sifnodecli:testnet
           docker push sifchain/sifcrg:testnet
+          docker push sifchain/ebrelayer:testnet

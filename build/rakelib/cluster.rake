@@ -70,7 +70,7 @@ namespace :cluster do
       end
 
       desc "Deploy a single network-aware sifnode on to your cluster"
-      task :peer, [:chainnet, :provider, :namespace, :image, :image_tag, :peer_address, :genesis_url] do |t, args|
+      task :peer, [:chainnet, :provider, :namespace, :image, :image_tag, :peer_address, :genesis_url, :ethereum_websocket_address, :ethereum_contract_address, :ethereum_private_key] do |t, args|
         check_args(args)
 
         cmd = %Q{helm upgrade #{ns(args)} ../build/helm/sifnode \
@@ -79,7 +79,12 @@ namespace :cluster do
           --set sifnode.env.genesisURL=#{args[:genesis_url]} \
           --set sifnode.env.peerAddress=#{args[:peer_address]} \
           --set image.tag=#{image_tag(args)} \
-          --set image.repository=#{image_repository(args)}
+          --set image.repository=#{image_repository(args)} \
+          --set ebrelayer.image.tag=#{image_tag(args)} \
+          --set ebrelayer.env.ethereumWebsocketAddress=#{args[:ethereum_websocket_address]} \
+          --set ebrelayer.env.ethereumContractAddress=#{args[:ethereum_contract_address]} \
+          --set ebrelayer.env.moniker=#{args[:chainnet]} \
+          --set ebrelayer.env.ethereumPrivateKey=#{args[:ethereum_private_key]}
         }
 
         system({"KUBECONFIG" => kubeconfig(args) }, cmd)

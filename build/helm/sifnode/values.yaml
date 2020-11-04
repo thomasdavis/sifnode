@@ -44,6 +44,17 @@ sifnode:
 
 sifnodecli:
 
+ebrelayer:
+  image:
+    repository: sifchain/ebrelayer
+    pullPolicy: IfNotPresent
+    tag: "testnet"
+  env:
+    ethereumContractAddress: ""
+    ethereumWebsocketAddress: ""
+    ethereumPrivateKey: ""
+    moniker: ""
+
 service:
   type: LoadBalancer
   port: 26656
