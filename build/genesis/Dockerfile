@@ -26,11 +26,6 @@ FROM alpine
 
 ENV PACKAGES curl jq bind-tools expect
 
-EXPOSE 1317
-EXPOSE 26656
-EXPOSE 26657
-EXPOSE 7545
-
 RUN apk add --update --no-cache $PACKAGES
 
 # Copy the smart contract ABIs over.
