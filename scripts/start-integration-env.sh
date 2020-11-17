@@ -3,6 +3,10 @@ BASEDIR=$(pwd)
 set -e
 echo "apologies for this sudo, it is to delete non-persisent cryptographic keys that usually has enhanced permissions"
 sudo rm -rf ./build/networks
+# safe space to build test runner, not even recursive chmod can modify the permission of the priv_validator_state.json files
+#cd $BASEDIR/build/integration-env/
+#docker build -f Dockerfile.testrunner --tag testrunner:1.0 ../../
+cd $BASEDIR/
 make clean install
 cd $BASEDIR/smart-contracts && yarn install
 docker-compose -f $BASEDIR/build/genesis/docker-compose-ganache.yml up -d

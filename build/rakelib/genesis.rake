@@ -30,9 +30,10 @@ namespace :genesis do
         puts "the file #{network_config(args[:chainnet])} does not exist!"
         exit(1)
       end
-
-      build_docker_image(args[:chainnet])
-      boot_docker_network(chainnet: args[:chainnet], seed_network_address: "192.168.2.0/24", eth_config: with_eth)
+      if args[:chainnet] != 'localnet'
+        build_docker_image(args[:chainnet])
+      end
+        boot_docker_network(chainnet: args[:chainnet], seed_network_address: "192.168.2.0/24", eth_config: with_eth)
     end
 
     desc "Expose local seed node to the outside world"
@@ -79,7 +80,7 @@ def boot_docker_network(chainnet:, seed_network_address:, eth_config:)
     cmd += "MONIKER#{idx+1}=#{node['moniker']} PASSWORD#{idx+1}=#{node['password']} IPV4_ADDRESS#{idx+1}=#{node['ipv4_address']} "
   end
 
-  cmd += "IPV4_SUBNET=#{seed_network_address} #{eth_config} docker-compose -f ./genesis/docker-compose.yml up"
+  cmd += "IPV4_SUBNET=#{seed_network_address} #{eth_config} docker-compose -f ./genesis/docker-compose#{chainnet == 'localnet' ? '-integration':''}.yml up"
   system(cmd)
 end
 
