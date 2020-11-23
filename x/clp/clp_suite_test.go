@@ -15,6 +15,8 @@ func TestClp(t *testing.T) {
 	RunSpecs(t, "Clp Suite")
 }
 
+// Add one working BDD test example for a demonstration.  This is a simple dupe of TestKeeper_SetPool
+// See full Ginkgo documentation at https://onsi.github.io/ginkgo/
 var _ = Describe("ClpBdd", func() {
 	var (
 		ctx sdk.Context
