@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-. ${SCRIPT_DIR}/configuration/parameters
-
 # Run from setup-linux-environment.sh.  Runs all the setup
 # that needs to happen as non-root.
 # (see setup-linux-environment-root.sh for more tools)

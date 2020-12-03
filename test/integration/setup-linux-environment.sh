@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-. ${SCRIPT_DIR}/configuration/parameters
-
 # Sets up a bare Ubuntu environment with all the tools we use
 # for integration tests
 

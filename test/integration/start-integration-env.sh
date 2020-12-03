@@ -3,9 +3,6 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-. ${SCRIPT_DIR}/configuration/parameters
-
 BASEDIR=$(pwd)/$(dirname $0)/../..
 NETWORKDIR=$BASEDIR/deploy/networks
 CONTAINER_NAME="integration_sifnode1_1"
