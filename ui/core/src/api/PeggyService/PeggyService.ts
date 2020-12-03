@@ -2,7 +2,8 @@ import { SifUnSignedClient } from "../utils/SifClient";
 import { provider, TransactionReceipt } from "web3-core";
 import Web3 from "web3";
 import { getBridgeBankContract } from "./BridgeBankContract";
-import { AssetAmount } from "../../entities";
+import { AssetAmount, Token } from "../../entities";
+import BigNumber from "bignumber.js";
 
 export type PeggyServiceContext = {
   sifApiUrl: string;
@@ -12,7 +13,9 @@ export type PeggyServiceContext = {
 
 const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-export type IPeggyService = {};
+export type IPeggyService = {
+  lock(cosmosRecipient: string, assetAmount: AssetAmount): Promise<string>;
+};
 
 export default function createPeggyService({
   getWeb3Provider,
@@ -30,15 +33,18 @@ export default function createPeggyService({
   }
 
   return {
-    async lock(cosmosRecipient: string, assetAmount: AssetAmount) {
+    async lock(sifRecipient: string, assetAmount: AssetAmount) {
+      const cosmosRecipient = Web3.utils.utf8ToHex(sifRecipient);
       const web3 = await ensureWeb3();
       const bridgeBankContract = getBridgeBankContract(
         web3,
         bridgeBankContractAddress
       );
+      (bridgeBankContract as any).setProvider(web3.currentProvider);
       const accounts = await web3.eth.getAccounts();
-      const coinDenom = assetAmount.asset.symbol;
-      const amount = assetAmount.amount.toString();
+
+      const coinDenom = (assetAmount.asset as Token).address ?? NULL_ADDRESS;
+      const amount = new BigNumber(assetAmount.amount.toString());
       const fromAddress = accounts[0];
 
       return new Promise((resolve, reject) => {
@@ -50,12 +56,12 @@ export default function createPeggyService({
         }
 
         bridgeBankContract.methods
-          .lock(cosmosRecipient, coinDenom, amount, {
+          .lock(cosmosRecipient, coinDenom, amount)
+          .send({
             from: fromAddress,
             value: coinDenom === NULL_ADDRESS ? amount : 0,
-            gas: 300000,
+            gas: 300000, // 300,000 Gwei
           })
-          .send()
           .on("transactionHash", (_hash: string) => {
             hash = _hash;
             resolvePromise();
