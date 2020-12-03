@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-. configuration/parameters
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. ${SCRIPT_DIR}/configuration/parameters
 
 ## Case 1
 ## 1. send tx to cosmos after get the lock event in ethereum

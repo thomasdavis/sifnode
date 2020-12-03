@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-. configuration/parameters
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. ${SCRIPT_DIR}/configuration/parameters
 
 echo "======================"
 echo 'if force killed remember to stop the services, remove non-running containers, network and untagged images'
