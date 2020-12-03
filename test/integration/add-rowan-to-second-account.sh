@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+. configuration/parameters
+
 PASSWORD=$(yq r network-definition.yml "(*==$MONIKER).password")
 ADDR=$(yq r network-definition.yml "(*==$MONIKER).address")
 

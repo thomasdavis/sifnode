@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+. configuration/parameters
+
 # Run from setup-linux-environment.sh.  Runs all the setup
 # that needs to happen as non-root.
 # (see setup-linux-environment-root.sh for more tools)

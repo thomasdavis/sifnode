@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+. configuration/parameters
+
 #
 # Sifnode entrypoint.
 #

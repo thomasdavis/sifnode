@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -euo pipefail
+
+. configuration/parameters
   
 PASSWORD=$(yq r network-definition.yml "(*==$MONIKER).password")
 

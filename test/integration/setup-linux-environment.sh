@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+. configuration/parameters
+
 # Sets up a bare Ubuntu environment with all the tools we use
 # for integration tests
 
