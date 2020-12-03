@@ -1,8 +1,6 @@
 #!/bin/bash
 set -x
-BASEDIR=$(pwd)
 PASSWORD=$(yq r network-definition.yml "(*==$MONIKER).password")
-ADDR=$(yq r network-definition.yml "(*==$MONIKER).address")
 
 yes $PASSWORD | sifnodecli keys add user1
 
