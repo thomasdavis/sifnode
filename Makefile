@@ -45,6 +45,9 @@ tests:
 feature-tests:
 	@go test -v ./test/bdd --godog.format=pretty --godog.random -race -coverprofile=.coverage.txt
 
+benchmark-tests:
+	@go test -v -bench=. ./... | grep Bench
+
 run:
 	go run ./cmd/sifnoded start
 
