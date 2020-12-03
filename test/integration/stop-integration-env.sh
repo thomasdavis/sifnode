@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 echo "======================"
 echo 'if force killed remember to stop the services, remove non-running containers, network and untagged images'
 echo "======================"

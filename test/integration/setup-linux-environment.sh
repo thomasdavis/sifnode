@@ -1,5 +1,7 @@
 #!/bin/bash 
 
+set -euo pipefail
+
 # Sets up a bare Ubuntu environment with all the tools we use
 # for integration tests
 

@@ -1,5 +1,7 @@
 #!/bin/bash
-set -x
+
+set -euo pipefail
+  
 PASSWORD=$(yq r network-definition.yml "(*==$MONIKER).password")
 
 yes $PASSWORD | sifnodecli keys add user1

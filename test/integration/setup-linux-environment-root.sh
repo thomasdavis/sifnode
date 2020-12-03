@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 # Run from setup-linux-environment.sh.  Runs all the setup
 # that needs to happen as root.

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -euo pipefail
 
 echo "Minting peggyeth ( minted from Peggy) using ethbridge"
 ## Case 1

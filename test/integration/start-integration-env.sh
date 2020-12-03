@@ -1,7 +1,7 @@
 #!/bin/bash
 # must run from the root directory of the sifnode tree
 
-set -e # exit on any failure
+set -euo pipefail
 
 BASEDIR=$(pwd)/$(dirname $0)/../..
 NETWORKDIR=$BASEDIR/deploy/networks

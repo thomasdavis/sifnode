@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 ## Case 1
 ## 1. send tx to cosmos after get the lock event in ethereum
 sifnodecli tx ethbridge create-claim 0x30753E4A8aad7F8597332E813735Def5dD395028 3 eth 0x11111111262b236c9ac9a9a8c8e4276b5cf6b2c9 \
