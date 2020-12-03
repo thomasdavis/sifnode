@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 
 echo "Minting peggyeth ( minted from Peggy) using ethbridge"

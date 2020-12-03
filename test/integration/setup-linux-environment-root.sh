@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -e
 
 # Run from setup-linux-environment.sh.  Runs all the setup

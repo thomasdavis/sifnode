@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 ## Case 1
 ## 1. send tx to cosmos after get the lock event in ethereum
