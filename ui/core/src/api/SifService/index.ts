@@ -103,8 +103,7 @@ export default function createSifService({
         state.accounts = (await wallet.getAccounts()).map(
           ({ address }) => address
         );
-
-        [state.address] = state.accounts;
+        state.address = state.accounts[0];
 
         client = new SifClient(sifApiUrl, state.address, wallet);
 
@@ -125,7 +124,7 @@ export default function createSifService({
       state.log = "";
     },
 
-    async getBalance(address?: Address): Promise<AssetAmount[]> {
+    async getBalance(address: Address = state.address): Promise<AssetAmount[]> {
       if (!client) throw "No client. Please sign in.";
       if (!address) throw "Address undefined. Fail";
 

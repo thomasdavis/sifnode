@@ -34,7 +34,13 @@ describe("PeggyService", () => {
 
     await PeggyService.lock(address, AssetAmount(ETH, "1"));
 
-    const balance = await sifService.getBalance();
-    expect(balance).toBe("hello");
+    const balances = await sifService.getBalance(address);
+
+    const ethbalance = balances.find(
+      ({ asset: { symbol } }) => symbol === "ceth"
+    );
+
+    await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+    expect(ethbalance?.toFixed()).toBe("1000000001000000000");
   });
 });

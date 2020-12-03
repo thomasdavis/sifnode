@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { getBridgeBankContract } from "./BridgeBankContract";
 import { AssetAmount, Token } from "../../entities";
 import BigNumber from "bignumber.js";
+import ReconnectingWebSocket from "reconnecting-websocket";
 
 export type PeggyServiceContext = {
   sifApiUrl: string;
@@ -27,7 +28,8 @@ export default function createPeggyService({
   let _web3: Web3 | null = null;
   async function ensureWeb3(): Promise<Web3> {
     if (!_web3) {
-      _web3 = new Web3(await getWeb3Provider());
+      const provider = await getWeb3Provider();
+      _web3 = new Web3(provider);
     }
     return _web3;
   }
@@ -35,24 +37,35 @@ export default function createPeggyService({
   return {
     async lock(sifRecipient: string, assetAmount: AssetAmount) {
       const cosmosRecipient = Web3.utils.utf8ToHex(sifRecipient);
+
       const web3 = await ensureWeb3();
       const bridgeBankContract = getBridgeBankContract(
         web3,
         bridgeBankContractAddress
       );
       (bridgeBankContract as any).setProvider(web3.currentProvider);
-      const accounts = await web3.eth.getAccounts();
 
+      const accounts = await web3.eth.getAccounts();
       const coinDenom = (assetAmount.asset as Token).address ?? NULL_ADDRESS;
       const amount = new BigNumber(assetAmount.amount.toString());
       const fromAddress = accounts[0];
 
-      return new Promise((resolve, reject) => {
+      return await new Promise((resolve, reject) => {
         let hash: string;
         let receipt: TransactionReceipt;
+        let newBlock = false;
+
+        const unsubscribe = sifClient.subscribe((event) => {
+          // is tx correct?
+
+          console.log({ event });
+          newBlock = true;
+          resolvePromise();
+          unsubscribe && unsubscribe();
+        });
 
         function resolvePromise() {
-          if (receipt && hash) resolve(hash);
+          if (hash && receipt && newBlock) resolve(hash);
         }
 
         bridgeBankContract.methods
