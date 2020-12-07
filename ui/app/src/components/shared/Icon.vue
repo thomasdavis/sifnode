@@ -7,16 +7,17 @@ import DownArrow from "./icons/DownArrow.vue";
 import Tick from "./icons/Tick.vue";
 import Cross from "./icons/Cross.vue";
 import Back from "./icons/Back.vue";
+import Plus from "./icons/Plus.vue";
 
 export default defineComponent({
   props: {
     icon: {
       type: String as PropType<
-        "arrows" | "back" | "circle-half" | "pool" | "down" | "tick" | "cross"
+        "arrows" | "back" | "circle-half" | "pool" | "plus" | "down" | "tick" | "cross"
       >,
     },
   },
-  components: { Cross, Tick, DownArrow, CircleArrows, CircleHalf, PoolIcon, Back },
+  components: { Cross, Tick, DownArrow, CircleArrows, CircleHalf, PoolIcon, Back, Plus },
 });
 </script>
 
@@ -29,5 +30,6 @@ export default defineComponent({
     <Tick v-if="icon === 'tick'" />
     <Cross v-if="icon === 'cross'" />
     <Back v-if="icon === 'back'" />
+    <Plus v-if="icon === 'plus'" />
   </span>
 </template>
