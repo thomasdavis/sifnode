@@ -6,16 +6,17 @@ import PoolIcon from "./icons/PoolIcon.vue";
 import DownArrow from "./icons/DownArrow.vue";
 import Tick from "./icons/Tick.vue";
 import Cross from "./icons/Cross.vue";
+import Back from "./icons/Back.vue";
 
 export default defineComponent({
   props: {
     icon: {
       type: String as PropType<
-        "arrows" | "circle-half" | "pool" | "down" | "tick" | "cross"
+        "arrows" | "back" | "circle-half" | "pool" | "down" | "tick" | "cross"
       >,
     },
   },
-  components: { Cross, Tick, DownArrow, CircleArrows, CircleHalf, PoolIcon },
+  components: { Cross, Tick, DownArrow, CircleArrows, CircleHalf, PoolIcon, Back },
 });
 </script>
 
@@ -27,5 +28,6 @@ export default defineComponent({
     <DownArrow v-if="icon === 'down'" />
     <Tick v-if="icon === 'tick'" />
     <Cross v-if="icon === 'cross'" />
+    <Back v-if="icon === 'back'" />
   </span>
 </template>

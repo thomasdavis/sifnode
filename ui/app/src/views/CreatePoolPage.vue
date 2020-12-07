@@ -153,7 +153,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Layout class="pool" backLink="/pool">
+  <Layout class="pool" backLink="/pool" title="Add Liquidity">
     <Modal @close="handleSelectClosed">
       <template v-slot:activator="{ requestOpen }">
         <CurrencyPairPanel

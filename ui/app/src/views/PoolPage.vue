@@ -53,10 +53,7 @@ export default defineComponent({
   align-items: center;
 
   h3 {
-    flex-grow: 1;
-    text-align: left;
-    font-size: 16px;
-    color: $c_text;
+    @include title16;
   }
 }
 
