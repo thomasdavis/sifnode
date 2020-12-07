@@ -105,7 +105,11 @@ export default function createSifService({
         );
         state.address = state.accounts[0];
 
-        client = new SifClient(sifApiUrl, state.address, wallet);
+        client = new SifClient({
+          apiUrl: sifApiUrl,
+          senderAddress: state.address,
+          signer: wallet,
+        });
 
         state.log = "signed in";
         state.connected = true;

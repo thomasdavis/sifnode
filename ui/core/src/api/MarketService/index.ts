@@ -34,7 +34,7 @@ export default function createMarketService({
   loadAssets,
   sifApiUrl,
 }: MarketServiceContext) {
-  const sifClient = new SifUnSignedClient(sifApiUrl);
+  const sifClient = new SifUnSignedClient({ apiUrl: sifApiUrl });
   const poolMap = new Map<string, Pool>();
 
   async function initialize() {

@@ -5,6 +5,7 @@ import { getWeb3Provider } from "../../test/utils/getWeb3Provider";
 
 import { AssetAmount } from "../../entities";
 
+import WS from "jest-websocket-mock";
 import { getFakeTokens } from "../EthereumService/utils/getFakeTokens";
 import createSifService, { SifServiceContext } from "../SifService";
 
@@ -17,13 +18,16 @@ const testConfig: SifServiceContext = {
 };
 describe("PeggyService", () => {
   let PeggyService: IPeggyService;
-
+  let server;
   beforeEach(async () => {
+    server = new WS("ws://127.0.0.1:26657/websocket");
+
     PeggyService = createPeggyService({
       ...testConfig,
       bridgeBankContractAddress: "0x75c35C980C0d37ef46DF04d31A140b65503c0eEd",
       getWeb3Provider,
     });
+    await server.connected;
   });
 
   test("pegging tokens from ethereum", async () => {

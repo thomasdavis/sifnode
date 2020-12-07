@@ -10,54 +10,10 @@ import {
   setupAuthExtension,
   SigningCosmosClient,
 } from "@cosmjs/launchpad";
-import ReconnectingWebSocket from "reconnecting-websocket";
+
+import { setupTxWatcher, TxWatcher, TxHandler } from "./TxWatcher";
 
 import { ClpExtension, setupClpExtension } from "./x/clp";
-type Handler = (a: any) => Promise<void> | void;
-
-type TxWatcher = {
-  addListener(handler: Handler): () => void;
-};
-
-function setupTxWatcher(
-  socketLocation = "ws://localhost:26657/websocket",
-  ws = new ReconnectingWebSocket(socketLocation)
-): TxWatcher {
-  let listeners: Handler[] = [];
-
-  ws.onopen = () => {
-    ws.send(
-      JSON.stringify({
-        jsonrpc: "2.0",
-        method: "subscribe",
-        id: "1",
-        params: {
-          query: `tm.event='Tx'`,
-        },
-      })
-    );
-
-    // Every transaction runs listeners
-    ws.onmessage = async (event) => {
-      for (var listener of listeners) {
-        // awaiting each listener - we may want to change this later?
-        listener(event);
-      }
-    };
-  };
-  ws.onerror = (err) => {
-    console.log("ERROR:" + err);
-  };
-
-  return {
-    addListener(handler: Handler) {
-      listeners.push(handler);
-      return () => {
-        listeners = listeners.filter((listener) => listener === handler);
-      };
-    },
-  };
-}
 
 type CustomLcdClient = LcdClient & AuthExtension & ClpExtension;
 
@@ -78,17 +34,25 @@ export class SifClient extends SigningCosmosClient implements IClpApi {
   protected readonly lcdClient: CustomLcdClient;
   protected txWatcher?: TxWatcher;
 
-  constructor(
-    apiUrl: string,
-    senderAddress: string,
-    signer: OfflineSigner,
-    gasPrice?: GasPrice,
-    gasLimits?: Partial<GasLimits<CosmosFeeTable>>,
-    broadcastMode?: BroadcastMode,
-    watcherUrl?: string
-  ) {
-    super(apiUrl, senderAddress, signer, gasPrice, gasLimits, broadcastMode);
-    this.lcdClient = createLcdClient(apiUrl, broadcastMode);
+  constructor(o: {
+    apiUrl: string;
+    senderAddress: string;
+    signer: OfflineSigner;
+    gasPrice?: GasPrice;
+    gasLimits?: Partial<GasLimits<CosmosFeeTable>>;
+    broadcastMode?: BroadcastMode;
+    watcherUrl?: string;
+    txWatcher?: TxWatcher;
+  }) {
+    super(
+      o.apiUrl,
+      o.senderAddress,
+      o.signer,
+      o.gasPrice,
+      o.gasLimits,
+      o.broadcastMode
+    );
+    this.lcdClient = createLcdClient(o.apiUrl, o.broadcastMode);
     this.swap = this.lcdClient.clp.swap;
     this.getPools = this.lcdClient.clp.getPools;
     this.addLiquidity = this.lcdClient.clp.addLiquidity;
@@ -96,10 +60,12 @@ export class SifClient extends SigningCosmosClient implements IClpApi {
     this.getLiquidityProvider = this.lcdClient.clp.getLiquidityProvider;
     this.removeLiquidity = this.lcdClient.clp.removeLiquidity;
 
-    if (watcherUrl) this.txWatcher = setupTxWatcher(watcherUrl);
+    if (o.watcherUrl && !o.txWatcher)
+      this.txWatcher = setupTxWatcher(o.watcherUrl);
+    else this.txWatcher = o.txWatcher;
   }
 
-  subscribe(handler: Handler) {
+  subscribe(handler: TxHandler) {
     return this.txWatcher?.addListener(handler);
   }
 
@@ -117,23 +83,26 @@ export class SifUnSignedClient extends CosmosClient implements IClpApi {
   protected readonly lcdClient: CustomLcdClient;
   protected txWatcher?: TxWatcher;
 
-  constructor(
-    apiUrl: string,
-    broadcastMode?: BroadcastMode,
-    watcherUrl?: string
-  ) {
-    super(apiUrl, broadcastMode);
-    this.lcdClient = createLcdClient(apiUrl, broadcastMode);
+  constructor(o: {
+    apiUrl: string;
+    broadcastMode?: BroadcastMode;
+    watcherUrl?: string;
+    txWatcher?: TxWatcher;
+  }) {
+    super(o.apiUrl, o.broadcastMode);
+    this.lcdClient = createLcdClient(o.apiUrl, o.broadcastMode);
     this.swap = this.lcdClient.clp.swap;
     this.getPools = this.lcdClient.clp.getPools;
     this.addLiquidity = this.lcdClient.clp.addLiquidity;
     this.createPool = this.lcdClient.clp.createPool;
     this.getLiquidityProvider = this.lcdClient.clp.getLiquidityProvider;
     this.removeLiquidity = this.lcdClient.clp.removeLiquidity;
-    if (watcherUrl) this.txWatcher = setupTxWatcher();
+    if (o.watcherUrl && !o.txWatcher)
+      this.txWatcher = setupTxWatcher(o.watcherUrl);
+    else this.txWatcher = o.txWatcher;
   }
 
-  subscribe(handler: Handler) {
+  subscribe(handler: TxHandler) {
     console.log("subscribing");
     return this.txWatcher?.addListener(handler);
   }

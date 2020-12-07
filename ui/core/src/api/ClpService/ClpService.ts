@@ -44,7 +44,7 @@ type IClpService = {
 export default function createClpService({
   sifApiUrl,
 }: ClpServiceContext): IClpService {
-  const client = new SifUnSignedClient(sifApiUrl);
+  const client = new SifUnSignedClient({ apiUrl: sifApiUrl });
 
   return {
     async addLiquidity(params: {

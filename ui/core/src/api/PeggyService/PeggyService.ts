@@ -23,7 +23,7 @@ export default function createPeggyService({
   sifApiUrl,
   bridgeBankContractAddress,
 }: PeggyServiceContext): IPeggyService {
-  const sifClient = new SifUnSignedClient(sifApiUrl);
+  const sifClient = new SifUnSignedClient({ apiUrl: sifApiUrl });
 
   let _web3: Web3 | null = null;
   async function ensureWeb3(): Promise<Web3> {
@@ -55,13 +55,13 @@ export default function createPeggyService({
         let receipt: TransactionReceipt;
         let newBlock = false;
 
-        const unsubscribe = sifClient.subscribe((event) => {
+        sifClient.subscribe((event) => {
           // is tx correct?
 
           console.log({ event });
-          newBlock = true;
-          resolvePromise();
-          unsubscribe && unsubscribe();
+          // newBlock = true;
+          // resolvePromise();
+          // unsubscribe && unsubscribe();
         });
 
         function resolvePromise() {
