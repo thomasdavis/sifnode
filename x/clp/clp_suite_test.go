@@ -33,7 +33,7 @@ var _ = Describe("ClpBdd", func() {
 				pool := test.GenerateRandomPool(1)[0]
 				err := keeper.SetPool(ctx, pool)
 				Expect(err).To(BeNil())
-				getpool, err := keeper.GetPool(ctx, pool.ExternalAsset.Ticker)
+				getpool, err := keeper.GetPool(ctx, pool.ExternalAsset.Symbol)
 				Expect(getpool).To(Equal(pool))
 				Expect(err).To(BeNil())
 			})
