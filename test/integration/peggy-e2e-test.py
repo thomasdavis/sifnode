@@ -1,14 +1,14 @@
 import json
+import os
 import re
 import time
-import os
 
-from test_utilities import get_shell_output, SIF_ETH, burn_peggy_coin, ETHEREUM_ETH, owner_addr, moniker, \
+from test_utilities import get_shell_output, SIF_ETH, burn_peggy_coin, ETHEREUM_ETH, owner_addr, \
     get_sifchain_addr_balance, wait_for_sifchain_addr_balance, advance_n_ethereum_blocks, n_wait_blocks, \
     cd_smart_contracts_dir, send_eth_lock
 from test_utilities import print_error_message, get_user_account, get_sifchain_balance, network_password, \
     bridge_bank_address, \
-    smart_contracts_dir, wait_for_sifchain_balance, wait_for_balance
+    wait_for_sifchain_balance, wait_for_balance
 
 # define users
 USER = "user1"
@@ -137,7 +137,19 @@ def basic_happy_path_scenario_1():
     _dai_symbol = "dai"
     _sifchain_user = USER
 
+    user_balance_before_tx = get_sifchain_balance(
+        _sifchain_user,
+        _dai_symbol,
+        network_password)
+
     send_eth_lock(_sifchain_user, _dai_symbol, _amount)
+
+    assert wait_for_sifchain_balance(
+        _sifchain_user,
+        _dai_symbol,
+        network_password,
+        user_balance_before_tx + _amount
+        ), "Basic Happy Path Scenario One Failed: Incorrect Sifchain Balance"
 
     print("########## Basic Happy Path Scenario One Over ##########")
 
@@ -172,14 +184,14 @@ def basic_happy_path_scenario_2():
         _bridge_bank_address,
         _eth_symbol,
         bridge_bank_balance_before_tx + _amount
-    ), "Basic Happy Path Scenario 2 Failed: Incorrect Eth Balance"
+        ), "Basic Happy Path Scenario Two Failed: Incorrect Eth Balance"
 
     assert wait_for_sifchain_balance(
         _sifchain_user,
         _sif_eth_symbol,
         _network_password,
         user_balance_before_tx + _amount
-    ), "Basic Happy Path Scenario 2 Failed: Incorrect Sifchain Balance"
+        ), "Basic Happy Path Scenario Two Failed: Incorrect Sifchain Balance"
 
     print("########## Basic Happy Path Scenario Two Over ##########")
 
