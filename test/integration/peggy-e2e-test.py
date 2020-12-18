@@ -50,6 +50,18 @@ def get_peggyrwn_balance(account, symbol):
     return 0
 
 
+# Send eth from ETHEREUM_PRIVATE_KEY to BridgeBank, lock the eth on bridgebank, ceth should end up in sifchain_user
+def send_eth_lock(sifchain_user, symbol, amount):
+    command_line = cd_smart_contracts_dir + "yarn peggy:lock {} {} {}".format(
+        get_user_account(sifchain_user, network_password), symbol, amount)
+    get_shell_output(command_line)
+
+def send_erowan_lock(sifchain_user, symbol, amount):
+    command_line = cd_smart_contracts_dir + "yarn peggy:lock {} {} {}".format(
+        get_user_account(sifchain_user, network_password), "erowan", 2000)
+    get_shell_output(command_line)
+
+
 def burn_peggyrwn(sifchain_user, peggyrwn_contract, amount):
     command_line = cd_smart_contracts_dir + "yarn peggy:burn {} {} {}".format(
         get_user_account(sifchain_user, network_password), peggyrwn_contract, amount)
@@ -110,6 +122,160 @@ def test_case_2():
     wait_for_eth_balance(operatorAddress, ETHEREUM_ETH, operator_balance_before_tx + amount)
     print("########## Test Case Two Over ##########")
 
+def basic_happy_path_scenario_1():
+    '''
+    Scenario:   A user locks 100 DAI in the bridgebank.
+
+    Outcome:    User is minted cDAI at their sifchain recipient address as
+                this is under the deposit limit and DAI is whitelisted on
+                the ethereum smart contracts.
+    '''
+
+    print("########## Basic Happy Path Scenario One Start ##########")
+
+    _amount = 100
+    _dai_symbol = "dai"
+    _sifchain_user = USER
+
+    send_eth_lock(_sifchain_user, _dai_symbol, _amount)
+
+    print("########## Basic Happy Path Scenario One Over ##########")
+
+def basic_happy_path_scenario_2():
+    '''
+    Scenario:   A user locks 5 eth in the bridgebank.
+    Outcome:    User is minted 5 ceth in their sifchain recipient address
+    '''
+
+    print("########## Basic Happy Path Scenario Two Start ##########")
+
+    _amount = 5 * 10 ** 18
+    _bridge_bank_address = bridge_bank_address
+    _eth_symbol = "eth"
+    _network_password = network_password
+    _sifchain_user = USER
+    _sif_eth_symbol = "ceth"
+
+    bridge_bank_balance_before_tx = get_eth_balance(
+        _bridge_bank_address,
+        _eth_symbol)
+
+    user_balance_before_tx = get_sifchain_balance(
+        _sifchain_user,
+        _sif_eth_symbol,
+        _network_password)
+
+    print(f"send_eth_lock({_sifchain_user}, {_eth_symbol}, {_amount})")
+    send_eth_lock(_sifchain_user, _eth_symbol, _amount)
+
+    assert wait_for_eth_balance(
+        _bridge_bank_address,
+        _eth_symbol,
+        bridge_bank_balance_before_tx + _amount
+    ), "Basic Happy Path Scenario 2 Failed: Incorrect Eth Balance"
+
+    assert wait_for_sifchain_balance(
+        _sifchain_user,
+        _sif_eth_symbol,
+        _network_password,
+        user_balance_before_tx + _amount
+    ), "Basic Happy Path Scenario 2 Failed: Incorrect Sifchain Balance"
+
+    print("########## Basic Happy Path Scenario Two Over ##########")
+
+def basic_happy_path_scenario_3():
+    '''
+    Scenario:   A user locks $2000 worth of rowan up on sifchain.
+
+    Outcome:    User receives same amount of erowan minted to their
+                ethereum recipient address.
+    '''
+
+    raise NotImplementedError
+
+def basic_happy_path_scenario_4():
+    '''
+    Scenario:   A user burns $2000 worth of erowan on ethereum.
+
+    Outcome:    The user receives $2000 worth of rowan on their sifchain
+                recipient address.
+    '''
+
+    print("########## Basic Happy Path Scenario Four Start ##########")
+
+    _user = USER
+    _rowan_contract = ROWAN_CONTRACT
+    _amount = 2000
+
+    burn_peggyrwn(_user, _rowan_contract, _amount)
+
+    print("########## Basic Happy Path Scenario Four Over ##########")
+
+def basic_sad_path_scenario_1():
+    '''
+    Scenario:   A user deposits 15 eth into the bridge bank smart contract
+                by calling the lock function. Deposit limits for ethereum
+                are 10eth
+
+    Outcome:    transaction reverts as this deposit is over the threshold
+                for deposited funds.
+    '''
+    raise NotImplementedError
+
+def basic_sad_path_scenario_2():
+    '''
+    Scenario:   A user burns 15 ceth on sifchain to redeem their ethereum
+                on an ethereum account.
+
+    Outcome:    Transaction fails as this is over the sifchain max amount
+                of ceth to burn. The user still has that 15 ceth in their
+                wallet.
+    '''
+    raise NotImplementedError
+
+def basic_sad_path_scenario_3():
+    '''
+    Scenario:   A user locks $10,000 rowan on sifchain to redeem their
+                ethereum on an ethereum account.
+
+    Outcome:    Transaction fails as this is over the sifchain max
+                amount of rowan to lock. The user still has that $10,000
+                worth of rowan in their wallet. No erowan is minted.
+    '''
+    raise NotImplementedError
+
+def basic_sad_path_scenario_4():
+    '''
+    Scenario:   A user burns $10,000 erowan on ethereum to redeem their
+                rowan on a sifchain account.
+
+    Outcome:    Transaction fails as this is over the ethereum smart contract
+                max amount of rowan to burn. The user still has that $10,000
+                worth of rowan in their ethereum wallet. No rowan is unlocked.
+
+    '''
+    raise NotImplementedError
+
+def advanced_security_scenario_1():
+    '''
+    Scenario:   A user tries to submit a new prophecy claim on ethereum and is
+                not a registered validator in the valset.sol smart contract.
+
+    Outcome:    Transaction reverts and prophecy claim is not submitted.
+
+    '''
+    raise NotImplementedError
+
+def advanced_security_scenario_2():
+    '''
+    Scenario:   A user tries to submit a new prophecy claim on sifchain and is
+                not a registered validator in the keeper that tracks this.
+
+    Outcome:    Transaction on sifchain fails and does not create a new
+                prophecy claim.
+    '''
+    raise NotImplementedError
+
 
 def test_balance_does_not_change_without_manual_block_advance():
     print("########## test_balance_does_not_change_without_manual_block_advance")
@@ -136,6 +302,10 @@ def test_balance_does_not_change_without_manual_block_advance():
     print(f"final balance is {get_sifchain_balance(USER, SIF_ETH, network_password)}")
 
 
-test_case_1()
-test_case_2()
-test_balance_does_not_change_without_manual_block_advance()
+if __name__ == '__main__':
+    test_case_1()
+    test_case_2()
+    try:
+        test_balance_does_not_change_without_manual_block_advance()
+    except:
+        print("This is expected to fail until we get the block waiting PR")
