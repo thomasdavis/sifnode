@@ -19,10 +19,12 @@ import { Mnemonic } from "../../entities/Wallet";
 import { IWalletService } from "../IWalletService";
 import { SifClient } from "../utils/SifClient";
 import { ensureSifAddress } from "./utils";
+import { getKeplrProvider } from "./getKeplrProvider"
 
 export type SifServiceContext = {
   sifAddrPrefix: string;
   sifApiUrl: string;
+  getSifProvider: () => Promise<any>;
 };
 
 type IClpService = {
@@ -51,11 +53,14 @@ type IClpService = {
  *
  * SifService handles communication between our ui core Domain and the SifNode blockchain
  */
-export default function createSifService({
+export default function sifService({
   sifAddrPrefix,
-  sifApiUrl,
+  sifApiUrl
 }: SifServiceContext): IWalletService {
   const {} = sifAddrPrefix;
+
+  // Provider should not be passed in on invocation as there could be multiple providers
+  const keplrProvider = getKeplrProvider()
 
   // Reactive state for communicating state changes
   const state: {
@@ -82,7 +87,18 @@ export default function createSifService({
       return state;
     },
 
-    async connect() {},
+    async connect() {
+      // get provider
+      if(!keplrProvider) {
+        console.error('keplr not found. Notify')
+        if (keplrProvider.experimentalSuggestChain) {
+
+        }
+      } else {
+        console.log('keplr found')
+      }
+
+    },
     async disconnect() {},
     isConnected() {
       return state.connected;
