@@ -25,7 +25,12 @@ export default ({
     async sendCosmosTransaction(params: TxParams) {
       return await api.SifService.transfer(params);
     },
-
+    async connectToWallet() {
+      await api.SifService.connect();
+    },
+    async disconnectWallet() {
+      await api.SifService.disconnect();
+    },
     async disconnect() {
       api.SifService.purgeClient();
     },
