@@ -24,7 +24,6 @@ import { getKeplrProvider } from "./getKeplrProvider"
 export type SifServiceContext = {
   sifAddrPrefix: string;
   sifApiUrl: string;
-  getSifProvider: () => Promise<any>;
 };
 
 type IClpService = {
@@ -86,18 +85,22 @@ export default function sifService({
     getState() {
       return state;
     },
-
     async connect() {
       // get provider
-      if(!keplrProvider) {
-        console.error('keplr not found. Notify')
+      if(keplrProvider) {
+        console.error('keplr found. notify')
         if (keplrProvider.experimentalSuggestChain) {
-
+          try {
+            // await keplrProvider.experimentalSuggestChain({})
+          } catch (error) {
+            console.error('keplr experimental feature not found, please upgrae')
+          }
+        } else {
+          console.error('keplr not found. notify')
         }
       } else {
-        console.log('keplr found')
+        console.error('keplr not found. Notify')
       }
-
     },
     async disconnect() {},
     isConnected() {
