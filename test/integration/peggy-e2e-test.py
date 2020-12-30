@@ -311,7 +311,4 @@ def test_balance_does_not_change_without_manual_block_advance():
 if __name__ == '__main__':
     test_case_1()
     test_case_2()
-    try:
-        test_balance_does_not_change_without_manual_block_advance()
-    except:
-        print("This is expected to fail until we get the block waiting PR")
+    test_balance_does_not_change_without_manual_block_advance()
