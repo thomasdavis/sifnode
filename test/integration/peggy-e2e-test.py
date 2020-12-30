@@ -50,12 +50,6 @@ def get_peggyrwn_balance(account, symbol):
     return 0
 
 
-# Send eth from ETHEREUM_PRIVATE_KEY to BridgeBank, lock the eth on bridgebank, ceth should end up in sifchain_user
-def send_eth_lock(sifchain_user, symbol, amount):
-    command_line = cd_smart_contracts_dir + "yarn peggy:lock {} {} {}".format(
-        get_user_account(sifchain_user, network_password), symbol, amount)
-    get_shell_output(command_line)
-
 def send_erowan_lock(sifchain_user, symbol, amount):
     command_line = cd_smart_contracts_dir + "yarn peggy:lock {} {} {}".format(
         get_user_account(sifchain_user, network_password), "erowan", 2000)
