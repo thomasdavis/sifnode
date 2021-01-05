@@ -36,4 +36,9 @@ contract ValsetStorage {
     * @notice gap of storage for future upgrades
     */
     uint256[100] private ____gap;
+
+    /**
+     * @dev: validator address mapped to its key
+     */
+    mapping(address => bytes32) public validatorKeys;
 }
