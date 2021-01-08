@@ -48,12 +48,9 @@ describe("EthereumService", () => {
 
     const balances = EthereumService.getState().balances;
 
-    const ethAmount = getBalance(balances, "eth").amount;
     const atkAmount = getBalance(balances, "atk").amount;
     const btkAmount = getBalance(balances, "btk").amount;
 
-    // 98xxxxxxxxxxxxxxxxxx = 98ish eth ^ (see above)
-    expect(/^98\d{18}/.test(ethAmount.toString())).toBe(true);
     expect(atkAmount.toString()).toEqual("10000000000");
     expect(btkAmount.toString()).toEqual("10000000000");
   });

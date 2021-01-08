@@ -57,6 +57,6 @@
       "**/**.test.ts",
       "**/tests/unit/*.js"
     ],
-    "testTimeout": 1000000
+    "testTimeout": 60000
   }
 }

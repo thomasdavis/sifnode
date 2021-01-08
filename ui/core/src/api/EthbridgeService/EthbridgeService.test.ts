@@ -7,7 +7,7 @@ import { createWaitForBalance } from "../../test/utils/waitForBalance";
 import { akasha } from "../../test/utils/accounts";
 import { createTestSifService } from "../../test/utils/services";
 import { getTestingToken } from "../../test/utils/getTestingToken";
-
+import config from "../../config.localnet.json";
 describe("PeggyService", () => {
   let EthbridgeService: ReturnType<typeof createEthbridgeService>;
 
@@ -15,9 +15,10 @@ describe("PeggyService", () => {
 
   beforeEach(async () => {
     ETH = getTestingToken("ETH");
+    console.log("bridgebankContractAddress", config.bridgebankContractAddress);
 
     EthbridgeService = createEthbridgeService({
-      bridgebankContractAddress: "0xf204a4Ef082f5c04bB89F7D5E6568B796096735a",
+      bridgebankContractAddress: config.bridgebankContractAddress,
       getWeb3Provider,
     });
   });
@@ -43,7 +44,7 @@ describe("PeggyService", () => {
         .onError((err) => {
           throw err.payload;
         });
-      advanceBlock(200);
+      advanceBlock(51);
     });
   });
 });

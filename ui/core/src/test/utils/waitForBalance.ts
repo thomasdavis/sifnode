@@ -6,7 +6,7 @@ export const createWaitForBalance = (sifService: ISifService) => {
     symbol: string,
     expectedAmount: string,
     account: string,
-    maxTries = 100
+    maxTries = 30
   ) {
     for (let i = 0; i < maxTries; i++) {
       await sleep(1000);
