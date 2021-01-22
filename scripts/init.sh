@@ -27,7 +27,7 @@ sifnoded add-genesis-clp-admin $(sifnodecli keys show akasha -a)
 
 sifnoded  add-genesis-validators $(sifnodecli keys show sif -a --bech val)
 
-sifnoded gentx --name sif --amount 1000000000000000000000000stake --keyring-backend test
+sifnoded gentx --name sif --amount 100000000000000000stake --keyring-backend test
 
 echo "Collecting genesis txs..."
 sifnoded collect-gentxs

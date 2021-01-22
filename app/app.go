@@ -89,7 +89,7 @@ func MakeCodec() *codec.Codec {
 }
 
 func init() {
-	sdk.PowerReduction = sdk.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil))
+	sdk.PowerReduction = sdk.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(1), big.NewInt(18), nil))
 }
 
 type SifchainApp struct {
